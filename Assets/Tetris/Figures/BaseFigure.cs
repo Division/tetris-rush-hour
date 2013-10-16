@@ -31,6 +31,8 @@ public abstract class BaseFigure : MonoBehaviour {
 		bool outOfBounds;
 		bool hasCollision = TestCollision(xPosition, newYPosition, currentOrientation, out outOfBounds);
 		
+		controlDisabled = hasCollision;
+		
 		AnimateToNewPosition(xPosition, newYPosition, currentOrientation, hasCollision);
 	}
 	
@@ -38,6 +40,11 @@ public abstract class BaseFigure : MonoBehaviour {
 	
 	virtual public void Move(int side)
 	{
+		if (controlDisabled)
+		{
+			return;
+		}
+		
 		int newXPosition = xPosition + side;
 		bool outOfBounds;
 		if (TestCollision(newXPosition, yPosition, currentOrientation, out outOfBounds))
@@ -301,6 +308,8 @@ public abstract class BaseFigure : MonoBehaviour {
 	protected GameObject blockContainer;
 	protected int currentOrientation = 0;
 	protected List<BaseBlock> blocks = new List<BaseBlock>();
+	protected bool controlDisabled = false;
+	
 	//-------------------
 	// Collision data for every orientation
 	protected List<FigureCollisionData> collisionData = new List<FigureCollisionData>();

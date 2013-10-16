@@ -53,14 +53,10 @@ public class BlockController : MonoBehaviour {
 			return;
 		}
 		
-		if (Time.time - lastFallDownTime > 0.03f)
+		if (currentFigure)
 		{
-			if (currentFigure)
-			{
-				currentFigure.FallDown();
-				lastFallDownTime = Time.time;
-				lastMoveTime = Time.time;
-			}
+			currentFigure.FallDown();
+			lastMoveTime = Time.time;
 		}
 	}
 	
@@ -129,9 +125,9 @@ public class BlockController : MonoBehaviour {
 	{
 		if (Time.time - lastFallDownTime > fallInterval)
 		{
-			lastFallDownTime = Time.time;
 			if (currentFigure)
 			{
+				lastFallDownTime = Time.time;
 				currentFigure.FallDown();
 			}
 		}
