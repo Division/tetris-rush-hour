@@ -6,6 +6,8 @@ public class MenuHandler : MonoBehaviour {
 	public TetrisController tetrisController;
 	public MainMenu mainMenu;
 	public PauseMenu pauseMenu;
+	public GameOverMenu gameOverMenu;
+	public AboutMenu aboutMenu;
 	public static MenuHandler Instance { get { return instance; } }
 	
 	public void ShowMainMenu()
@@ -14,6 +16,9 @@ public class MenuHandler : MonoBehaviour {
 		{
 			currentMenu.gameObject.SetActive(false);
 		}
+		gameOverMenu.gameObject.SetActive(false);
+		aboutMenu.gameObject.SetActive(false);
+		
 		mainMenu.gameObject.SetActive(true);
 		currentMenu = mainMenu;
 	}
@@ -48,6 +53,27 @@ public class MenuHandler : MonoBehaviour {
 		Time.timeScale = 1;
 		tetrisController.gameObject.SetActive(true);
 		SetMenuCameraDisplay(false);
+	}
+	
+	//--------------------------------------------------------------------------
+	
+	public void ShowGameOverController(int score)
+	{
+		gameOverMenu.UpdateWithScore(score);
+		SetMenuCameraDisplay(true);
+		tetrisController.gameObject.SetActive(false);
+		gameOverMenu.gameObject.SetActive(true);
+		currentMenu = pauseMenu;
+	}
+	
+	//--------------------------------------------------------------------------
+	
+	public void ShowAbout()
+	{
+		SetMenuCameraDisplay(true);
+		mainMenu.gameObject.SetActive(false);
+		aboutMenu.gameObject.SetActive(true);
+		currentMenu = pauseMenu;
 	}
 	
 	//**************************************************************************

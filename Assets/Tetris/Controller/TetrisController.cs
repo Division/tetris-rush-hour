@@ -27,6 +27,9 @@ public class TetrisController : MonoBehaviour {
 	
 	public void Restart()
 	{
+		gamePlayController.enabled = true;
+		brickController.enabled = true;
+		
 		if (backgroundMusicSlow)
 		{
 			Destroy(backgroundMusicSlow.gameObject);
@@ -208,8 +211,26 @@ public class TetrisController : MonoBehaviour {
 	
 	private void HandleHameOver()
 	{
-		Debug.Log("GAME OVER");
+		if (PlayerPrefs.HasKey(TetrisConst.CONFIG_BEST_SCORE))
+		{
+			if (PlayerPrefs.GetInt(TetrisConst.CONFIG_BEST_SCORE) < gamePlayController.score)
+			{
+				PlayerPrefs.SetInt(TetrisConst.CONFIG_BEST_SCORE, gamePlayController.score);
+			}
+		} else {
+			PlayerPrefs.SetInt(TetrisConst.CONFIG_BEST_SCORE, gamePlayController.score);
+		}
+		
+		gamePlayController.enabled = false;
 		brickController.enabled = false;
+		Invoke("ShowGameOver", 1.0f);
+	}
+	
+	//--------------------------------------------------------------------------
+	
+	private void ShowGameOver()
+	{
+		MenuHandler.Instance.ShowGameOverController(gamePlayController.score);
 	}
 	
 	//**************************************************************************

@@ -127,9 +127,9 @@ public class BlockController : MonoBehaviour {
 	
 	void Update() 
 	{
-		if (Time.time - lastMoveTime > fallInterval)
+		if (Time.time - lastFallDownTime > fallInterval)
 		{
-			lastMoveTime = Time.time;
+			lastFallDownTime = Time.time;
 			if (currentFigure)
 			{
 				currentFigure.FallDown();

@@ -118,7 +118,7 @@ public class GamePlayController : MonoBehaviour {
  		waveProps = new List<WaveProps>();
 		WaveProps prop;
 		
-		prop = new WaveProps(5, 8, 0.1f, 0, 0);
+		prop = new WaveProps(30, 8, 0.1f, 0, 0);
 		waveProps.Add(prop);
 		
 		prop = new WaveProps(20, 12, 0.1f, 0, 1);
@@ -154,7 +154,7 @@ public class GamePlayController : MonoBehaviour {
 		prop = new WaveProps(25, 10, 0.06f, 0, 14);
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(30, 10, 0.06f, 0, 14);
+		prop = new WaveProps(30, 10, 0.06f, 0, 15);
 		waveProps.Add(prop);
 	}
 	

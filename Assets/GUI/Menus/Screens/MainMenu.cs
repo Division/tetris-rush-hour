@@ -13,7 +13,7 @@ public class MainMenu : BaseMenu
 	
 	private void HandleAbout()
 	{
-		
+		MenuHandler.Instance.ShowAbout();
 	}
 	
 }

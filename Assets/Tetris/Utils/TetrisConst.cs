@@ -14,4 +14,6 @@ public class TetrisConst
 	public const string TAG_GAME_CAMERA = "GameCamera";
 	public const string TAG_MENU_CAMERA = "MenuCamera";
 	
+	public const string CONFIG_BEST_SCORE = "BestScore";
+	
 }

@@ -45,7 +45,6 @@ public class InGameUI : MonoBehaviour {
 	
 	public void UpdateNextFigure(System.Type figureType)
 	{
-		Debug.Log("UPDATE");
 		DeleteCurrentFigure();
 		CreateFigure(figureType);
 	}
