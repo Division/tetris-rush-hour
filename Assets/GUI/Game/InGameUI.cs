@@ -26,7 +26,6 @@ public class InGameUI : MonoBehaviour {
 		if (nextFigure)
 		{
 			nextFigure.gameObject.SetActive(false);
-			Debug.Log("disable");
 		}
 	}
 	
@@ -60,7 +59,6 @@ public class InGameUI : MonoBehaviour {
 				scoreBonusText.gameObject.SetActive(false);
 				if (nextFigure)
 				{
-					Debug.Log("enable");
 					nextFigure.gameObject.SetActive(true);
 				}
 			}

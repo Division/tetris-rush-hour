@@ -56,7 +56,7 @@ public class BlockController : MonoBehaviour {
 		if (currentFigure)
 		{
 			currentFigure.FallDown();
-			lastMoveTime = Time.time;
+			lastFallDownTime = Time.time;
 		}
 	}
 	
@@ -127,8 +127,7 @@ public class BlockController : MonoBehaviour {
 		{
 			if (currentFigure)
 			{
-				lastFallDownTime = Time.time;
-				currentFigure.FallDown();
+				FallDown();
 			}
 		}
 	}

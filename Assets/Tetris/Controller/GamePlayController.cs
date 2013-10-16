@@ -61,7 +61,7 @@ public class GamePlayController : MonoBehaviour {
 		currentWave = waveProps[0];
 		waveStartTime = Time.time;
 		PrepareNextFigure();
-		currentWaveIndex = -1;
+		currentWaveIndex = 0-1;
 		//currentWaveIndex = 12;
 		ApplyNextWave();
 	}
@@ -105,9 +105,19 @@ public class GamePlayController : MonoBehaviour {
 	//
 	//**************************************************************************
 	
+	private int bonusBombsSpawned;
 	private List<WaveProps> waveProps;
 	private WaveProps currentWave;
-	private List<System.Type[]> figureTypes;
+	private System.Type[] allFigures;
+	private System.Type[] basicFigures;
+	private System.Type[] basicAndPointFigures;
+	private System.Type[] basicAndPointAndShooterFigures;
+	private System.Type[] pointOnlyFigures;
+	private System.Type[] shooterOnlyFigures;
+	private System.Type[] zigZagOnlyFigures;
+	private System.Type[] gOnlyFigures;
+	private System.Type[] quadOnlyFigures;
+	private System.Type[] bombsOnlyFigures;
 	private float waveStartTime;
 	
 	//**************************************************************************
@@ -118,43 +128,79 @@ public class GamePlayController : MonoBehaviour {
  		waveProps = new List<WaveProps>();
 		WaveProps prop;
 		
-		prop = new WaveProps(30, 8, 0.1f, 0, 0);
+		prop = new WaveProps(20, 10, 0.11f, 0, 0);
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(20, 12, 0.1f, 0, 1);
+		prop = new WaveProps(20, 15, 0.09f, 0, 1); // Points
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(20, 10, 0.09f, 0, 2);
+		prop = new WaveProps(20, 15, 0.12f, 0, 2);
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(20, 10, 0.08f, 0, 3);
+		prop = new WaveProps(20, 10, 0.08f, 0, 3); // Shooter
 		waveProps.Add(prop);
 		
 		prop = new WaveProps(5, 15, 0.08f, 0, 4);
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(20, 15, 0.08f, 0, 5);
+		prop = new WaveProps(10, 8, 0.10f, 0, 5); // Bombs
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(10, 10, 0.07f, 0, 7);
+		prop = new WaveProps(30, 10, 0.07f, 0, 6);
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(20, 7, 0.06f, 0, 8);
+		prop = new WaveProps(20, 15, 0.12f, 1, 7); // Quad Figure
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(15, 10, 0.06f, 0, 9);
+		prop = new WaveProps(20, 15, 0.10f, 1, 8); // Bombs
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(25, 5, 0.05f, 0, 10);
+		prop = new WaveProps(20, 15, 0.1f, 0, 9); // L figure
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(15, 7, 0.06f, 0, 11);
+		prop = new WaveProps(25, 4, 0.045f, 0, 10); // FAST
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(25, 10, 0.06f, 0, 14);
+		prop = new WaveProps(35, 15, 0.09f, 0, 11); // Z figure
 		waveProps.Add(prop);
 		
-		prop = new WaveProps(30, 10, 0.06f, 0, 15);
+		prop = new WaveProps(30, 13, 0.07f, 0, 12); // BOMBS
+		waveProps.Add(prop);
+		
+		prop = new WaveProps(20, 35, 0.09f, 0, 13); // Long
+		waveProps.Add(prop);
+		
+		prop = new WaveProps(20, 15, 0.07f, 0, 14);
+		waveProps.Add(prop);
+		
+		prop = new WaveProps(20, 20, 0.1f, 0, 16); // Points
+		waveProps.Add(prop);
+		
+		prop = new WaveProps(20, 15, 0.07f, 2, 17); 
+		waveProps.Add(prop);
+		
+		prop = new WaveProps(20, 20, 0.07f, 0, 20); // Bombs
+		waveProps.Add(prop);
+		
+		prop = new WaveProps(20, 10, 0.06f, 1, 21);
+		waveProps.Add(prop);
+
+		prop = new WaveProps(5, 5, 0.06f, 0, 23); // Z figure
+		waveProps.Add(prop);
+
+		prop = new WaveProps(5, 5, 0.06f, 0, 24); // L figure
+		waveProps.Add(prop);
+		
+		prop = new WaveProps(5, 5, 0.06f, 0, 25); // Quad figure
+		waveProps.Add(prop);
+		
+		prop = new WaveProps(5, 17, 0.09f, 0, 26); // Bombs
+		waveProps.Add(prop);
+		
+		prop = new WaveProps(50, 20, 0.08f, 0, 27);
+		waveProps.Add(prop);
+		
+		prop = new WaveProps(50, 15, 0.08f, 3, 28);
 		waveProps.Add(prop);
 	}
 	
@@ -162,15 +208,7 @@ public class GamePlayController : MonoBehaviour {
 	
 	private void InitFigures()
 	{
-		figureTypes = new List<System.Type[]>();
-		
-		/*figureTypes.Add(new System.Type[]
-		{
-			typeof(BlockShooter),
-			typeof(ZigZagLeftFigure)
-		});*/
-		
-		figureTypes.Add(new System.Type[]
+		allFigures = new System.Type[]
 		{
 			typeof(PlankFigure),typeof(PlankFigure), typeof(PlankFigure), typeof(PlankFigure), 
 			typeof(QuadFigure),typeof(QuadFigure),typeof(QuadFigure),typeof(QuadFigure),
@@ -182,7 +220,51 @@ public class GamePlayController : MonoBehaviour {
 			typeof(ZigZagRightFigure),typeof(ZigZagRightFigure),
 			typeof(FigureGLeft),typeof(FigureGLeft),
 			typeof(FigureGRight),typeof(FigureGRight),
-		});
+		};
+		
+		basicFigures = new System.Type[]
+		{
+			typeof(PlankFigure),typeof(PlankFigure), typeof(PlankFigure), typeof(PlankFigure), 
+			typeof(QuadFigure),typeof(QuadFigure),typeof(QuadFigure),typeof(QuadFigure),
+			typeof(DoubleAngleFigure),typeof(DoubleAngleFigure),typeof(DoubleAngleFigure),typeof(DoubleAngleFigure),
+			typeof(ZigZagLeftFigure),typeof(ZigZagLeftFigure),
+			typeof(ZigZagRightFigure),typeof(ZigZagRightFigure),
+			typeof(FigureGLeft),typeof(FigureGLeft),
+			typeof(FigureGRight),typeof(FigureGRight),
+		};
+		
+		basicAndPointFigures = new System.Type[]
+		{
+			typeof(PlankFigure),typeof(PlankFigure), typeof(PlankFigure), typeof(PlankFigure), 
+			typeof(QuadFigure),typeof(QuadFigure),typeof(QuadFigure),typeof(QuadFigure),
+			typeof(PiercingPointFigure),typeof(PiercingPointFigure),
+			typeof(DoubleAngleFigure),typeof(DoubleAngleFigure),typeof(DoubleAngleFigure),typeof(DoubleAngleFigure),
+			typeof(ZigZagLeftFigure),typeof(ZigZagLeftFigure),
+			typeof(ZigZagRightFigure),typeof(ZigZagRightFigure),
+			typeof(FigureGLeft),typeof(FigureGLeft),
+			typeof(FigureGRight),typeof(FigureGRight),
+		};
+		
+		basicAndPointAndShooterFigures = new System.Type[]
+		{
+			typeof(PlankFigure),typeof(PlankFigure), typeof(PlankFigure), typeof(PlankFigure), 
+			typeof(QuadFigure),typeof(QuadFigure),typeof(QuadFigure),typeof(QuadFigure),
+			typeof(PiercingPointFigure),typeof(PiercingPointFigure),
+			typeof(DoubleAngleFigure),typeof(DoubleAngleFigure),typeof(DoubleAngleFigure),typeof(DoubleAngleFigure),
+			typeof(BlockShooter),typeof(BlockShooter),
+			typeof(ZigZagLeftFigure),typeof(ZigZagLeftFigure),
+			typeof(ZigZagRightFigure),typeof(ZigZagRightFigure),
+			typeof(FigureGLeft),typeof(FigureGLeft),
+			typeof(FigureGRight),typeof(FigureGRight),
+		};
+		
+		
+		pointOnlyFigures = new System.Type[] { typeof(PiercingPointFigure) };
+		shooterOnlyFigures = new System.Type[] { typeof(BlockShooter) };
+		zigZagOnlyFigures = new System.Type[] { typeof(ZigZagLeftFigure), typeof(ZigZagRightFigure) };
+		gOnlyFigures = new System.Type[] { typeof(FigureGLeft), typeof(FigureGRight) };
+		quadOnlyFigures = new System.Type[] { typeof(QuadFigure) };
+		bombsOnlyFigures = new System.Type[] { typeof(VerticalBombFigure) };
 	}
 	
 	//**************************************************************************
@@ -220,6 +302,7 @@ public class GamePlayController : MonoBehaviour {
 	
 	private void ApplyNextWave()
 	{
+		bonusBombsSpawned = 0;
 		waveStartTime = Time.time;
 		isRushing = false;
 		currentWaveIndex++;
@@ -258,9 +341,11 @@ public class GamePlayController : MonoBehaviour {
 		
 		int ind = 0;
 		
+		System.Type[] figureTypes = GetFigureTypes();
+		
 		do {
-			int index = Random.Range(0, figureTypes[0].Length);
-			result = figureTypes[0][index];
+			int index = Random.Range(0, figureTypes.Length);
+			result = figureTypes[index];
 			ind ++;
 		} while (result == nextFigureType && ind < 10);
 		
@@ -318,9 +403,9 @@ public class GamePlayController : MonoBehaviour {
 		
 		if (isRushing)
 		{
-			result = currentWave.fallInterval - 0.01f * GetWaveDelta();
+			result = currentWave.fallInterval - 0.0025f * GetWaveDelta();
 		} else {
-			result = MAX_FALL_INTERVAL - 0.02f * currentWaveIndex;
+			result = MAX_FALL_INTERVAL - 0.01f * currentWaveIndex;
 		}
 		
 		if (result < MIN_FALL_INTERVAL)
@@ -343,5 +428,57 @@ public class GamePlayController : MonoBehaviour {
 	private int GetCurrentSpeed()
 	{
 		return (int)(10 / GetFallInterval());
+	}
+	
+	//--------------------------------------------------------------------------
+	
+	private System.Type[] GetFigureTypes()
+	{
+		
+		if (bonusBombsSpawned < currentWave.bombsOnStart)
+		{
+			bonusBombsSpawned++;
+			return bombsOnlyFigures;
+		}
+		
+		if (isRushing)
+		{
+			switch (currentWaveIndex)
+			{
+				case 1: return pointOnlyFigures;
+				case 3: return shooterOnlyFigures;
+				case 5: return allFigures;
+				case 7: return quadOnlyFigures;
+				case 8: return bombsOnlyFigures;
+				case 9: return gOnlyFigures;
+				case 11: return zigZagOnlyFigures;
+				case 12: return bombsOnlyFigures;
+				case 16: return pointOnlyFigures;
+				case 20: return bombsOnlyFigures;
+				case 23: return zigZagOnlyFigures;
+				case 24: return gOnlyFigures;
+				case 25: return quadOnlyFigures;
+				case 26: return bombsOnlyFigures;
+			}
+		}
+	
+		if (currentWaveIndex <= 1)
+		{
+			return basicFigures;
+		} else 
+		if (currentWaveIndex <= 3)
+		{
+			return basicAndPointFigures;
+		} else
+		if (currentWaveIndex <= 4)
+		{
+			return basicAndPointAndShooterFigures;
+		} else 
+		if (currentWaveIndex == 5)
+		{
+			return bombsOnlyFigures;
+		}
+		
+		return allFigures;
 	}
 }

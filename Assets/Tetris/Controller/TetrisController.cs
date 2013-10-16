@@ -115,6 +115,7 @@ public class TetrisController : MonoBehaviour {
 	private SoundPlaybackController speedingSound;
 	private float resetTimeScaleTime;
 	private float lastMoveTime;
+	private float lastFallDownTime;
 	
 	private void ProcessInput()
 	{
@@ -150,10 +151,11 @@ public class TetrisController : MonoBehaviour {
 			brickController.MoveToSide(1);
 		}
 		
-		
-		if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+		bool fallDownTimeReached = Time.time - lastFallDownTime > 0.03f;
+		if (fallDownTimeReached && (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)))
 		{
 			brickController.FallDown();
+			lastFallDownTime = Time.time;
 			if (Input.GetKeyDown(KeyCode.S)) 
 			{
 				PlaySpeeding();
